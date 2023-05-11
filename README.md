@@ -7,40 +7,36 @@
  * 
  * Copyright (c) 2022 by LttGenius 330470351@qq.com, All Rights Reserved. 
 -->
-# Í¼ÏñÌØÕ÷ÌáÈ¡
+# Image Feature extraction
 
 ## intensity
 <pre class="matlab-code">
     [ intensity ] = extract_intensity(data,imsize)
 </pre>
-- data: »Ò¶ÈÍ¼Ïñ
-- imsize£ºÍ¼ÏñÖØĞÂ²Ã¼ôºóµÄ´óĞ¡  
-  
-
-data²ÎÊı±ØĞë¸ø³ö£¬imsize¿ÉÒÔ²»ÓÃ¸ø³ö¡£
-Èç¹û¸ø³öÁËimsize²ÎÊı£¬ÔÚÄÚ²¿»á½«Í¼Ïñ²Ã¼ôÎªimsize´óĞ¡
+- data: grayscale image
+- imsizeï¼šThe cropped size of the image
 
 ## LBP
 <pre class="matlab-code">
     [ lbp_feature ] = extract_LBP(data, block_size,imsize)
 </pre>
-- data: »Ò¶ÈÍ¼Ïñ
-- block_size£º½«»Ò¶ÈÍ¼Ïñ²Ã¼ô·Ö¿éºóÃ¿Ò»¿éµÄ´óĞ¡
-- imsize£ºÍ¼ÏñÖØĞÂ²Ã¼ôºóµÄ´óĞ¡   
+- data: grayscale image
+- block_sizeï¼šThe size of each block
+- imsizeï¼šThe cropped size  of the image  
   
-data²ÎÊı±ØĞë¸ø³ö£¬block_size±ØĞë¸ø³ö£¬ÕâÀïĞèÒª×¢Òâblock_sizeĞèÒªºÍÍ¼ÏñµÄsize´îÅäºÃ£¬size(data)./block_size±ØĞëÎªÕûÊı£¬´ú±íÒâÒåÎª·Ö³ÉÁË n * mÊıÁ¿µÄ¿é  
+dataå‚æ•°å¿…é¡»ç»™å‡ºï¼Œblock_sizeå¿…é¡»ç»™å‡ºï¼Œè¿™é‡Œéœ€è¦æ³¨æ„block_sizeéœ€è¦å’Œå›¾åƒçš„sizeæ­é…å¥½ï¼Œsize(data)./block_sizeå¿…é¡»ä¸ºæ•´æ•°ï¼Œä»£è¡¨æ„ä¹‰ä¸ºåˆ†æˆäº† n * mæ•°é‡çš„å—  
   
 
 ## Gabor
 <pre class="matlab-code">
     [ gabor_Feature ] = extract_Gabor( data, lambda, theta, block_size, imsize )
 </pre>
-- data: »Ò¶ÈÍ¼Ïñ
-- lambda£ºGaborÂË²¨Æ÷³ß´ç
-- theta£ºGaborÂË²¨Æ÷Ğı×ª½Ç¶È
-- block_size£º½«»Ò¶ÈÍ¼Ïñ²Ã¼ô·Ö¿éºóÃ¿Ò»¿éµÄ´óĞ¡
-- imsize£ºÍ¼ÏñÖØĞÂ²Ã¼ôºóµÄ´óĞ¡    
+- data: grayscale image
+- lambdaï¼šThe size of Gabor filter
+- thetaï¼šThe rotation angle of Gabor filter
+- block_sizeï¼šThe size of each block
+- imsizeï¼šThe cropped size  of the image  
 
- data²ÎÊı±ØĞë¸ø³ö£¬block_size±ØĞë¸ø³ö£¬ÕâÀïĞèÒª×¢Òâblock_sizeĞèÒªºÍÍ¼ÏñµÄsize´îÅäºÃ£¬size(data)./block_size±ØĞëÎªÕûÊı£¬´ú±íÒâÒåÎª·Ö³ÉÁË n * mÊıÁ¿µÄ¿é    
+ dataå‚æ•°å¿…é¡»ç»™å‡ºï¼Œblock_sizeå¿…é¡»ç»™å‡ºï¼Œè¿™é‡Œéœ€è¦æ³¨æ„block_sizeéœ€è¦å’Œå›¾åƒçš„sizeæ­é…å¥½ï¼Œsize(data)./block_sizeå¿…é¡»ä¸ºæ•´æ•°ï¼Œä»£è¡¨æ„ä¹‰ä¸ºåˆ†æˆäº† n * mæ•°é‡çš„å—    
    
-³ı´ËÖ®ÍâlambdaºÍthetaÒ²ÊÇ±ØĞëµÄ²ÎÊı
+é™¤æ­¤ä¹‹å¤–lambdaå’Œthetaä¹Ÿæ˜¯å¿…é¡»çš„å‚æ•°
