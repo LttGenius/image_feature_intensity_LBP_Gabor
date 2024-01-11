@@ -94,6 +94,30 @@ In contrast, if construct code as
 
 ```extractgabor``` extracts Gabor from grayscale image by slicing original image into multiple blocks. 
 
+## Add noise
+<pre class="matlab-code">
+    [ NoiseImage ] = addnoise( GrayImage, varargin )
+</pre>
+-   J = ADDNOISE(I, TypeNoise1, VarNoise1, TypeNoise2, VarNoise2, ...) Add noises of given TYPE to the intensity
+-   image I. TypeNoise is a string or char vector that can have one of these.
+-       'gaussian'       Gaussian white noise with constant
+-                        mean and variance
+-
+-       'localvar'       Zero-mean Gaussian white noise 
+-                        with an intensity-dependent variance
+-
+-       'poisson'        Poisson noise
+-
+-       'salt & pepper'  "On and Off" pixels
+-
+-       'speckle'        Multiplicative noise
+-
+-       'outlier'        "On and off" pixels in columns
+-
+-   VarNoise is the corresponding parameter. 
+
+```NoiseImage = ADDNOISE( I, 'gaussian', 0, 0.01, 'salt & pepper', 0.5)```
+
 # Citation
 The above algorithms are proposed in the following literature. 
 ```

@@ -25,20 +25,26 @@ for i=1:40
         P=strcat(data_path,  int2str(j), '.pgm');
 
         % load image
-        imag=imread(P); 
+        imag = imread(P); 
 %         imag=imresize(imag,[48 48]);
         
+        %% Add noise
+        GrayImage = rgb2gray(imag);
+        [ NoiseImage ] = addnoise( GrayImage, 'gaussian', 0, 0.01,...
+                                               'salt & pepper', 0.2,...
+                                               'outlier', 0.3);
+
         %% get Feature
         % intensity
-        intensity_feature_matrix(:, count) = extractintensity(imag, [64 64]);
+        intensity_feature_matrix(:, count) = extractintensity(NoiseImage, [64 64]);
         
         % lbp
         mapping = getmapping(8,'u2');  % get mapping
         unit_norm = 'h';  % no normalise
-        LBP_feature_matrix(:, count) = extractlbp(imag, [9 10],  [72 70], 1, 8, mapping, unit_norm);
+        LBP_feature_matrix(:, count) = extractlbp(NoiseImage, [9 10],  [72 70], 1, 8, mapping, unit_norm);
         
         % gabor
-        Gabor_feature_matrix(:, count) = extractgabor(imag, [4], [0 35 90 135], [25 30], [75 90]);
+        Gabor_feature_matrix(:, count) = extractgabor(NoiseImage, [4], [0 35 90 135], [25 30], [75 90]);
         
         % gt
         gt(count) = i;
