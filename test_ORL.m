@@ -1,35 +1,52 @@
-% ORL 数据集测试
+% Test on ORL dataset. 
+clc
+clear
+%% path
+path='ORL_Faces\'; 
+num_view = 3;
+nCls = 40;
+num_sample = 400;
 
-path='C:\Users\LttGenius\Documents\Face\ORL_Faces\'; 
-%这里只需要定位到ORL数据集中40个文件夹所在路径，程序会自动读取目录下所有子文件夹里面的所有数据
+%% extract feature
+count = 1;
 
-count=1;
-X=cell(1,3);  % 特征结果 分别为intensity LBP Gabor
-gt = zeros(1,400);  % 标签结果（只适用于ORL数据集）
-intensity_feature_matrix = zeros(400, 4096);
-LBP_feature_matrix = zeros(400, 3304);
-Gabor_feature_matrix = zeros(400, 6750);
+% data and ground truth
+X = cell( num_view, 1 );  
+gt = zeros( num_sample, 1 );  
+
+% each view
+intensity_feature_matrix = zeros(4096, num_sample);
+LBP_feature_matrix = zeros(3304, num_sample);
+Gabor_feature_matrix = zeros(6750, num_sample);
+
 for i=1:40
-    tmp=strcat('s',int2str(i));
-    P0=strcat(path,tmp);
-    P0=strcat(P0,'\');
+    data_path = strcat(path, 's',int2str(i), '\');
     for j=1:10
-        P=strcat(P0,int2str(j));
-        P=strcat(P,'.pgm');
-        imag=imread(P); % load
-        imag=imresize(imag,[48 48]);
-        % get Feature
-        int = extract_intensity(imag, [64 64]);
-        l = extract_LBP(imag, [9 10],  [72 70]);
-        g = extract_Gabor(imag, [4], [0 35 90 135], [25 30], [75 90]);
-        intensity_feature_matrix(count,:) = int;
-        LBP_feature_matrix(count,:) = l;
-        Gabor_feature_matrix(count,:) = g;
+        P=strcat(data_path,  int2str(j), '.pgm');
+
+        % load image
+        imag=imread(P); 
+%         imag=imresize(imag,[48 48]);
+        
+        %% get Feature
+        % intensity
+        intensity_feature_matrix(:, count) = extractintensity(imag, [64 64]);
+        
+        % lbp
+        mapping = getmapping(8,'u2');  % get mapping
+        unit_norm = 'h';  % no normalise
+        LBP_feature_matrix(:, count) = extractlbp(imag, [9 10],  [72 70], 1, 8, mapping, unit_norm);
+        
+        % gabor
+        Gabor_feature_matrix(:, count) = extractgabor(imag, [4], [0 35 90 135], [25 30], [75 90]);
+        
+        % gt
         gt(count) = i;
-        count=count+1;
+        
+        count = count+1;
     end
 end
 X{1} = intensity_feature_matrix;
 X{2} = LBP_feature_matrix;
 X{3} = Gabor_feature_matrix;
-save test_my_ORL.mat X gt  % 保存到mat文件
+save test_ORL.mat X gt  % 保存到mat文件

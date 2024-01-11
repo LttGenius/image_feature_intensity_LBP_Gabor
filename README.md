@@ -1,42 +1,131 @@
 <!--
- * @Author: LttGenius 330470351@qq.com
- * @Date: 2022-11-03 00:34:39
+ * @Author: xinyu-pu pushyu404@163.com
+ * @Date: 2024-1-12
  * @LastEditors: LttGenius 330470351@qq.com
- * @LastEditTime: 2022-11-03 01:10:57
+ * @LastEditTime: 2024-1-12
  * @Description: 
  * 
- * Copyright (c) 2022 by LttGenius 330470351@qq.com, All Rights Reserved. 
+ * Copyright (c) by xinyu-pu pushyu404@163.com, All Rights Reserved. 
 -->
 # Image Feature extraction
 
 ## intensity
 <pre class="matlab-code">
-    [ intensity ] = extract_intensity(data,imsize)
+    [ intensity_feature_vector ] = extractintensity( GrayImage, ImageSize )
 </pre>
-- data: grayscale image
-- imsize：The cropped size of the image
+-   GrayImage: Grayscale image. 
+-   lambda: Characteristic scale of Gabor. 
+-   theta: Feature Selection Angle of Gabor. 
+-   BlockSize: Size of each block.  
+-   ImageSize: Size of each image. If this parameter is given, EXTRACTGABOR will peform imresize(GrayImage, ImageSize). The default value of ImageSize is size(GrayImage). The size of GrayImage must comply with the following constraint. ```size(GrayImage) = BlockSize * n```, where n is a positive integer.
+  
+```extractintensity``` simply extracts intensity from grayscale image. 
+
+If construct code as
+<pre class="matlab-code">
+    ImageSize = [70 50];
+    [ intensity_feature_vector ] = extractintensity( GrayImage, ImageSize )
+</pre>
+```extractintensity``` will resize ```GrayImage``` to $70\times 50$ pixels. Then the intensity feature is extracted from the resuzed image. 
+
+In contrast, if construct code as
+<pre class="matlab-code">
+    ImageSize = [70 50];
+    [ intensity_feature_vector ] = extractintensity( GrayImage )
+</pre>
+```extractintensity``` will directly extract intensity feature from the image. 
 
 ## LBP
 <pre class="matlab-code">
-    [ lbp_feature ] = extract_LBP(data, block_size,imsize)
+    [ lbp_feature_vector ] = extractlbp( GrayImage, BlockSize, ImageSize, varargin )
 </pre>
-- data: grayscale image
-- block_size：The size of each block
-- imsize：The cropped size  of the image  
+-   GrayImage: Grayscale image. 
+-   BlockSize: Size of each block.  
+-   ImageSize: Size of each image. If this parameter is given, EXTRACTLBP
+-   will peform imresize(GrayImage, ImageSize). The default value of
+-   ImageSize is size(GrayImage).
+-   R: Circle of radius. 
+-   N: Number of sampling points. 
+-   MAPPING: See the getmapping function for different mappings and use 0 for no mapping. 
+-   MODE: Possible values for MODE are  
+-            'h' or 'hist'  to get a histogram of LBP codes, 'nh' to get a normalized histogram. Otherwise an LBP code image is returned.
+-   
+-  Inside the EXTRACTLBP it will split GrayImage into multiple block with
+-  size of each block is BlockSize. Block is denoted as I as follows. 
+-  Then a LBP is performed on I. 
+-   
+-   J = LBP(I,R,N,MAPPING,MODE) returns either a local binary pattern
+-   coded image or the local binary pattern histogram of an intensity
+-   image I. The LBP codes are computed using N sampling points on a
+-   circle of radius R and using mapping table defined by MAPPING.
+-   See the getmapping function for different mappings and use 0 for
+-   no mapping. Possible values for MODE are
+-       'h' or 'hist'  to get a histogram of LBP codes
+-       'nh'           to get a normalized histogram
+-   Otherwise an LBP code image is returned.
+-
+-   J = LBP(I) returns the original (basic) LBP histogram of image I
+-
+-   J = LBP(I,SP,MAPPING,MODE) computes the LBP codes using n sampling
+-   points defined in (n * 2) matrix SP. The sampling points should be
+-   defined around the origin (coordinates (0,0)).
+-
+- Finally, LBP features for all blocks are spliced into vectors. 
+-
+- The size of GrayImage must comply with the following constraint.
+- size(GrayImage) = BlockSize * n, where n is a positive integer. 
   
-data参数必须给出，block_size必须给出，这里需要注意block_size需要和图像的size搭配好，size(data)./block_size必须为整数，代表意义为分成了 n * m数量的块  
-  
+```extractlbp``` extracts LBP from grayscale image by slicing original image into multiple blocks. 
 
 ## Gabor
 <pre class="matlab-code">
-    [ gabor_Feature ] = extract_Gabor( data, lambda, theta, block_size, imsize )
+    [ gabor_feature_vector ] = extractgabor( GrayImage, lambda, theta, BlockSize, ImageSize )
 </pre>
-- data: grayscale image
-- lambda：The size of Gabor filter
-- theta：The rotation angle of Gabor filter
-- block_size：The size of each block
-- imsize：The cropped size  of the image  
+-   GrayImage: Grayscale image. 
+-   lambda: Characteristic scale of Gabor. 
+-   theta: Feature Selection Angle of Gabor. 
+-   BlockSize: Size of each block.  
+-   ImageSize: Size of each image. If this parameter is given, EXTRACTGABOR
+-   will peform imresize(GrayImage, ImageSize). The default value of
+-   ImageSize is size(GrayImage).
+-
+- The size of GrayImage must comply with the following constraint.
+- size(GrayImage) = BlockSize * n, where n is a positive integer. 
 
- data参数必须给出，block_size必须给出，这里需要注意block_size需要和图像的size搭配好，size(data)./block_size必须为整数，代表意义为分成了 n * m数量的块    
-   
-除此之外lambda和theta也是必须的参数
+```extractgabor``` extracts Gabor from grayscale image by slicing original image into multiple blocks. 
+
+# Citation
+The above algorithms are proposed in the following literature. 
+```
+@article{lbp,
+  title={Multiresolution gray-scale and rotation invariant texture classification with local binary patterns},
+  author={Ojala, Timo and Pietikainen, Matti and Maenpaa, Topi},
+  journal={IEEE Transactions on pattern analysis and machine intelligence},
+  volume={24},
+  number={7},
+  pages={971--987},
+  year={2002},
+  publisher={IEEE}
+}
+```
+```
+@article{Gabor,
+  title={Distortion invariant object recognition in the dynamic link architecture},
+  author={Lades, Martin and Vorbruggen, Jan C and Buhmann, Joachim and Lange, J{\"o}rg and Von Der Malsburg, Christoph and Wurtz, Rolf P and Konen, Wolfgang},
+  journal={IEEE Transactions on computers},
+  volume={42},
+  number={3},
+  pages={300--311},
+  year={1993},
+  publisher={IEEE}
+}
+```
+
+# ATTENTION
+This package is free for academic usage. You can run it at your own risk. 
+
+For other purposes, please contact Xinyu Pu (pushyu404@163.com). 
+
+This package was developed by Xinyu Pu.
+
+For any problem concerning the code, please feel free to contact Xinyu Pu (pushyu404@163.com)
