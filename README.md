@@ -119,7 +119,7 @@ In contrast, if construct code as
 ```NoiseImage = ADDNOISE( I, 'gaussian', 0, 0.01, 'salt & pepper', 0.5)```
 
 # Citation
-The above algorithms are proposed in the following literature. 
+The above algorithms are proposed in the following literatures. 
 ```
 @article{lbp,
   title={Multiresolution gray-scale and rotation invariant texture classification with local binary patterns},
